@@ -78,7 +78,7 @@ export const style = {
     border: 0,
   },
   backImage: {
-    margin: '12px',
+    margin: '2%',
     width: '25px',
     height: '25px',
   },

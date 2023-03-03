@@ -1,65 +1,50 @@
 import * as React from 'react';
 import './style.css';
 import { style } from './style';
-import { data } from './questions';
 
-type answer = {
-  questionId: number;
-  optionId: number;
-  answer: any;
-};
-
-export default function Question({ currentPage }) {
-  const questionPaper = data.questions?.[currentPage];
-  const [answer, setAnswer] = React.useState(
-    Array<answer>(data.questions?.length)
-  );
-
-  const handleChange = (questionId, optionId, value) => {
-    let ansObj = answer?.find((item) => item?.questionId === questionId);
-    if (ansObj) {
-      ansObj.answer = value;
-      ansObj.optionId = optionId;
-      setAnswer([
-        ...answer.filter((ans) => ans?.questionId !== questionId),
-        ansObj,
-      ]);
+export default function Question({ currentPage, questions, setAnswer }) {
+  const handleChange = (value) => {
+    if (questions[currentPage].questiontype === 'Checkbox') {
+      if ((questions[currentPage] as any)?.answer === undefined) {
+        (questions[currentPage] as any).answer = [value];
+      } else if (
+        (questions[currentPage] as any)?.answer &&
+        (questions[currentPage] as any)?.answer?.length > 0 &&
+        ((questions[currentPage] as any)?.answer as [])?.find(
+          (item) => item === value
+        )
+      ) {
+        const ans = new Set((questions[currentPage] as any)?.answer);
+        ans.delete(value);
+        (questions[currentPage] as any).answer = ans;
+      } else {
+        (questions[currentPage] as any).answer.push(value);
+      }
     } else {
-      setAnswer([
-        ...answer,
-        {
-          questionId,
-          optionId,
-          answer: value,
-        },
-      ]);
+      (questions[currentPage] as any).answer = value;
     }
+    setAnswer([...questions]);
+    console.log(questions[currentPage]);
   };
 
   return (
     <div>
-      <div style={style.topBodyContainer}>{questionPaper.question}</div>
+      <div style={style.topBodyContainer}>
+        {questions[currentPage].question}
+      </div>
       <div style={style.bodySpacer}></div>
 
-      {questionPaper.questionoption.map((opt) => {
+      {questions[currentPage].questionoption.map((opt) => {
         return (
           <div style={style.bodySpacer} key={opt?.optionid}>
             <input
-              type={questionPaper.questiontype}
+              type={questions[currentPage].questiontype}
               style={style.noSpace}
-              value={
-                answer?.find(
-                  (ans) => ans?.questionId === questionPaper?.questionid
-                )?.answer
-              }
               id={opt?.optionid.toString()}
               name="option-name"
+              checked={questions[currentPage]?.answer === opt.optionvalue}
               onChange={(e) => {
-                handleChange(
-                  questionPaper?.questionid,
-                  opt?.optionid,
-                  e.target.value
-                );
+                handleChange(opt.optionvalue || (e.target as any).value);
               }}
             />
             <text style={style.bodyOption}>{opt.optionvalue}</text>
