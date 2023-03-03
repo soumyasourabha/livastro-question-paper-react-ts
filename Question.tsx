@@ -1,31 +1,9 @@
 import * as React from 'react';
 import './style.css';
 import { style } from './style';
+import Form from './Form';
 
 export default function Question({ currentPage, questions, setAnswer }) {
-  const handleChange = (value) => {
-    if (questions[currentPage].questiontype === 'Checkbox') {
-      if ((questions[currentPage] as any)?.answer === undefined) {
-        (questions[currentPage] as any).answer = [value];
-      } else if (
-        (questions[currentPage] as any)?.answer &&
-        (questions[currentPage] as any)?.answer?.length > 0 &&
-        ((questions[currentPage] as any)?.answer as [])?.find(
-          (item) => item === value
-        )
-      ) {
-        const ans = new Set((questions[currentPage] as any)?.answer);
-        ans.delete(value);
-        (questions[currentPage] as any).answer = [...ans];
-      } else {
-        (questions[currentPage] as any).answer.push(value);
-      }
-    } else {
-      (questions[currentPage] as any).answer = value;
-    }
-    setAnswer([...questions]);
-  };
-
   return (
     <div>
       <div style={style.topBodyContainer}>
@@ -36,29 +14,13 @@ export default function Question({ currentPage, questions, setAnswer }) {
       {questions[currentPage].questionoption.map((opt) => {
         return (
           <div style={style.bodySpacer} key={opt?.optionid}>
-            <input
-              type={questions[currentPage].questiontype}
-              style={style.noSpace}
-              id={opt?.optionid.toString()}
-              name="option-name"
-              value={
-                questions[currentPage]?.answer ||
-                questions[currentPage]?.answer?.map((item) => item)
-              }
-              checked={
-                questions[currentPage].questiontype === 'Checkbox'
-                  ? questions[currentPage]?.answer?.filter(
-                      (item) => item === opt.optionvalue
-                    ).length > 0
-                  : questions[currentPage].questiontype === 'Radio'
-                  ? questions[currentPage]?.answer === opt.optionvalue
-                  : false
-              }
-              onChange={(e) => {
-                handleChange(opt.optionvalue || (e.target as any).value);
-              }}
+            <Form
+              questions={questions}
+              setAnswer={setAnswer}
+              currentPage={currentPage}
+              optionObj={opt}
+              readOnly={false}
             />
-            <text style={style.bodyOption}>{opt.optionvalue}</text>
           </div>
         );
       })}
