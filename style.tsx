@@ -77,4 +77,9 @@ export const style = {
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
     border: 0,
   },
+  backImage: {
+    margin: '12px',
+    width: '25px',
+    height: '25px',
+  },
 };
