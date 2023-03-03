@@ -16,7 +16,6 @@ export default function Question({ currentPage, questions, setAnswer }) {
           <div style={style.bodySpacer} key={opt?.optionid}>
             <Form
               questions={questions}
-              setAnswer={setAnswer}
               currentPage={currentPage}
               optionObj={opt}
               readOnly={false}

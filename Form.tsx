@@ -1,15 +1,15 @@
 import * as React from 'react';
 import './style.css';
 import { style } from './style';
+import { QuestionContext } from './App';
 
 export default function Form({
   questions,
-  setAnswer = null,
   currentPage = 0,
   optionObj,
   readOnly = false,
 }) {
-  const handleChange = (value) => {
+  const handleChange = (value, setAnswer) => {
     if (questions[currentPage].questiontype === 'Checkbox') {
       if ((questions[currentPage] as any)?.answer === undefined) {
         (questions[currentPage] as any).answer = [value];
@@ -33,34 +33,43 @@ export default function Form({
   };
 
   return (
-    <div>
-      <input
-        readOnly={readOnly}
-        type={questions[currentPage].questiontype}
-        style={style.noSpace}
-        id={optionObj?.optionid.toString()}
-        name="option-name"
-        value={
-          questions[currentPage].questiontype === 'Checkbox'
-            ? questions[currentPage]?.answer?.map((item) => item)
-            : questions[currentPage]?.answer
-        }
-        checked={
-          questions[currentPage].questiontype === 'Checkbox'
-            ? questions[currentPage]?.answer?.filter(
-                (item) => item === optionObj.optionvalue
-              ).length > 0
-            : questions[currentPage].questiontype === 'Radio'
-            ? questions[currentPage]?.answer === optionObj.optionvalue
-            : null
-        }
-        onChange={(e) => {
-          !readOnly
-            ? handleChange(optionObj.optionvalue || (e.target as any).value)
-            : null;
-        }}
-      />
-      <span style={style.bodyOption}>{optionObj.optionvalue}</span>
-    </div>
+    <QuestionContext.Consumer>
+      {(setAnswer) => {
+        return (
+          <div>
+            <input
+              readOnly={readOnly}
+              type={questions[currentPage].questiontype}
+              style={style.noSpace}
+              id={optionObj?.optionid.toString()}
+              name="option-name"
+              value={
+                questions[currentPage].questiontype === 'Checkbox'
+                  ? questions[currentPage]?.answer?.map((item) => item)
+                  : questions[currentPage]?.answer
+              }
+              checked={
+                questions[currentPage].questiontype === 'Checkbox'
+                  ? questions[currentPage]?.answer?.filter(
+                      (item) => item === optionObj.optionvalue
+                    ).length > 0
+                  : questions[currentPage].questiontype === 'Radio'
+                  ? questions[currentPage]?.answer === optionObj.optionvalue
+                  : null
+              }
+              onChange={(e) => {
+                !readOnly
+                  ? handleChange(
+                      optionObj.optionvalue || (e.target as any).value,
+                      setAnswer
+                    )
+                  : null;
+              }}
+            />
+            <span style={style.bodyOption}>{optionObj.optionvalue}</span>
+          </div>
+        );
+      }}
+    </QuestionContext.Consumer>
   );
 }

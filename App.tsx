@@ -4,10 +4,14 @@ import { style } from './style';
 import { data } from './questions';
 import Question from './Question';
 import Answer from './Answer';
+
+export const QuestionContext = React.createContext<any>(null);
+
 export default function App() {
   const [currentPage, setCurrentPage] = React.useState(0);
   const [questions, setAnswer] = React.useState(data.questions);
   const [isSubmitted, submit] = React.useState(false);
+
   return (
     <div>
       {!isSubmitted ? (
@@ -31,11 +35,13 @@ export default function App() {
             )}
           </div>
           <div style={style.bodyContainer}>
-            <Question
-              currentPage={currentPage}
-              questions={questions}
-              setAnswer={setAnswer}
-            />
+            <QuestionContext.Provider value={setAnswer}>
+              <Question
+                currentPage={currentPage}
+                questions={questions}
+                setAnswer={setAnswer}
+              />
+            </QuestionContext.Provider>
 
             <div
               style={{
