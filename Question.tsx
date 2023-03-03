@@ -3,7 +3,7 @@ import './style.css';
 import { style } from './style';
 import Form from './Form';
 
-export default function Question({ currentPage, questions, setAnswer }) {
+export default function Question({ currentPage, questions }) {
   return (
     <div>
       <div style={style.topBodyContainer}>

@@ -36,11 +36,7 @@ export default function App() {
           </div>
           <div style={style.bodyContainer}>
             <QuestionContext.Provider value={setAnswer}>
-              <Question
-                currentPage={currentPage}
-                questions={questions}
-                setAnswer={setAnswer}
-              />
+              <Question currentPage={currentPage} questions={questions} />
             </QuestionContext.Provider>
 
             <div
@@ -55,7 +51,6 @@ export default function App() {
                 <button
                   style={style.matButton}
                   onClick={() => {
-                    console.log(questions);
                     setCurrentPage(currentPage + 1);
                   }}
                 >
