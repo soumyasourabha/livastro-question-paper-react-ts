@@ -16,7 +16,7 @@ export default function Question({ currentPage, questions, setAnswer }) {
       ) {
         const ans = new Set((questions[currentPage] as any)?.answer);
         ans.delete(value);
-        (questions[currentPage] as any).answer = ans;
+        (questions[currentPage] as any).answer = [...ans];
       } else {
         (questions[currentPage] as any).answer.push(value);
       }
@@ -24,7 +24,6 @@ export default function Question({ currentPage, questions, setAnswer }) {
       (questions[currentPage] as any).answer = value;
     }
     setAnswer([...questions]);
-    console.log(questions[currentPage]);
   };
 
   return (
@@ -42,7 +41,19 @@ export default function Question({ currentPage, questions, setAnswer }) {
               style={style.noSpace}
               id={opt?.optionid.toString()}
               name="option-name"
-              checked={questions[currentPage]?.answer === opt.optionvalue}
+              value={
+                questions[currentPage]?.answer ||
+                questions[currentPage]?.answer?.map((item) => item)
+              }
+              checked={
+                questions[currentPage].questiontype === 'Checkbox'
+                  ? questions[currentPage]?.answer?.filter(
+                      (item) => item === opt.optionvalue
+                    ).length > 0
+                  : questions[currentPage].questiontype === 'Radio'
+                  ? questions[currentPage]?.answer === opt.optionvalue
+                  : false
+              }
               onChange={(e) => {
                 handleChange(opt.optionvalue || (e.target as any).value);
               }}
