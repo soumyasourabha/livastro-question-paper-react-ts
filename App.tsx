@@ -3,7 +3,7 @@ import './style.css';
 import { style } from './style';
 import { data } from './questions';
 import Question from './Question';
-
+import back from './back';
 export default function App() {
   const questionPaper = data.questions;
   const [currentPage, setCurrentPage] = React.useState(0);
@@ -12,7 +12,7 @@ export default function App() {
     <div>
       <div style={style.container}>
         <div style={style.header}>
-          
+           <img src={back} alt="Back" />
         </div>
         <div style={style.bodyContainer}>
           <Question currentPage={currentPage} />
