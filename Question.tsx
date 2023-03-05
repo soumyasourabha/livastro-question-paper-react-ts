@@ -13,6 +13,9 @@ const Question: React.FC<Props> = ({ currentPage, questions }) => {
     <div>
       <div style={style.topBodyContainer}>
         {questions[currentPage].question}
+        <span style={style.requiredTag}>
+          {questions[currentPage].validation && '*'}
+        </span>
       </div>
       <div style={style.bodySpacer}></div>
 

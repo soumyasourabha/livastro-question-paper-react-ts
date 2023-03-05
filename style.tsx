@@ -48,6 +48,10 @@ export const style = {
     padding: '0px',
     margin: '0px',
   },
+  paddingVertical: {
+    paddingTop: '20px',
+    paddingBottom: '20px',
+  },
   bodyOption: {
     fontFamily: 'Verdana',
     padding: '0px 10px',
@@ -85,5 +89,9 @@ export const style = {
   answerBody: {
     marginLeft: '10%',
     marginBottom: '4%',
+  },
+  requiredTag: {
+    color: '#d80001',
+    paddingLeft: '2px',
   },
 };

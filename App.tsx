@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './style.css';
 import { style } from './style';
-import { data } from './questions';
+import { data, QuestionType } from './questions';
 import Question from './Question';
 import Answer from './Answer';
 
@@ -12,6 +12,23 @@ const App: React.FC<any> = () => {
   const [questions, setAnswer] = React.useState(data.questions);
   const [isSubmitted, submit] = React.useState(false);
 
+  // check next / submit button validation depends on requied field
+  const checkValidation = (currentPage: number): boolean => {
+    return (
+      data.questions[currentPage].validation &&
+      // if its a radio or checkbox type than check if any of the option got choosen or not
+      (((data.questions[currentPage].questiontype === QuestionType.RADIO ||
+        data.questions[currentPage].questiontype === QuestionType.CHECKBOX) &&
+        data.questions[currentPage].questionoption.every(
+          (opt) => opt.selected === false
+        )) ||
+        // if its not a radio or checkbox type than check if any value is given or not
+        ((data.questions[currentPage].questiontype !== QuestionType.RADIO ||
+          data.questions[currentPage].questiontype !== QuestionType.CHECKBOX) &&
+          data.questions[currentPage].questionoption[0].optionvalue.trim()
+            .length === 0))
+    );
+  };
   return (
     <div>
       {!isSubmitted ? (
@@ -48,7 +65,12 @@ const App: React.FC<any> = () => {
             <div style={style.buttonPlacement}>
               {data.questions.length - 1 !== currentPage ? (
                 <button
-                  style={style.matButton}
+                  style={
+                    checkValidation(currentPage)
+                      ? { ...style.matButton, backgroundColor: '#ddd' }
+                      : style.matButton
+                  }
+                  disabled={checkValidation(currentPage)}
                   onClick={() => {
                     setCurrentPage(currentPage + 1);
                   }}

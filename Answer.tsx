@@ -11,7 +11,14 @@ const Answer: React.FC<Props> = ({ questions }) => {
   return (
     <div>
       <div style={style.container}>
-        <div style={{ ...style.topBodyContainer, padding: '10px' }}>Answer</div>
+        <div
+          style={{
+            ...style.topBodyContainer,
+            ...style.paddingVertical,
+          }}
+        >
+          Answer
+        </div>
         <div style={style.header}>
           {questions?.map((q, index) => {
             return (

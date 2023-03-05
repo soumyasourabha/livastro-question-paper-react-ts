@@ -2,7 +2,7 @@ import * as React from 'react';
 import './style.css';
 import { style } from './style';
 import { QuestionContext } from './App';
-import { IQuestion, IQuestionOption } from './questions';
+import { IQuestion, IQuestionOption, QuestionType } from './questions';
 
 type Props = {
   questions?: Array<IQuestion>;
@@ -18,12 +18,13 @@ const Form: React.FC<Props> = ({
   optionIndex = 0,
   readOnly = false,
 }) => {
+  // onChange handler function
   const handleChange = (value: string, setAnswer: Function) => {
     const qus = questions;
-    if (questions[currentPage].questiontype === 'Radio') {
+    if (questions[currentPage].questiontype === QuestionType.RADIO) {
       qus[currentPage].questionoption.map((item) => (item.selected = false));
       qus[currentPage].questionoption[optionIndex].selected = true;
-    } else if (questions[currentPage].questiontype === 'Checkbox') {
+    } else if (questions[currentPage].questiontype === QuestionType.CHECKBOX) {
       qus[currentPage].questionoption[optionIndex].selected =
         !qus[currentPage].questionoption[optionIndex].selected;
     } else {
@@ -31,10 +32,10 @@ const Form: React.FC<Props> = ({
     }
     setAnswer([...qus]);
   };
-
+  // check whether current screen question type is radio or checkbox or not
   const checkRadioOrCheckBoxType = (currentPage: number): boolean => {
-    return questions[currentPage].questiontype === 'Radio' ||
-      questions[currentPage].questiontype === 'Checkbox'
+    return questions[currentPage].questiontype === QuestionType.RADIO ||
+      questions[currentPage].questiontype === QuestionType.CHECKBOX
       ? true
       : false;
   };
@@ -47,6 +48,7 @@ const Form: React.FC<Props> = ({
               readOnly={readOnly}
               type={questions[currentPage].questiontype}
               style={style.noSpace}
+              required={questions[currentPage].validation}
               value={
                 checkRadioOrCheckBoxType(currentPage)
                   ? questions[currentPage].questionoption[optionIndex]

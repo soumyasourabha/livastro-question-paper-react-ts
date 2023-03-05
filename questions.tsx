@@ -20,4 +20,11 @@ export interface IQuestionOption {
   selected?: boolean;
   subquestion?: Array<any>;
 }
+export enum QuestionType {
+  RADIO = 'Radio',
+  DATE = 'Date',
+  TEXTAREA = 'Textarea',
+  CHECKBOX = 'Checkbox',
+  TEXT = 'Text',
+}
 export const data = questions as QuestionPaper;
