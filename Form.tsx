@@ -47,8 +47,6 @@ const Form: React.FC<Props> = ({
               readOnly={readOnly}
               type={questions[currentPage].questiontype}
               style={style.noSpace}
-              id={optionObj?.optionid.toString()}
-              name="option-name"
               value={
                 checkRadioOrCheckBoxType(currentPage)
                   ? questions[currentPage].questionoption[optionIndex]
