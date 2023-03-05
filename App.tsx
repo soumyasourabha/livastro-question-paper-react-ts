@@ -7,7 +7,7 @@ import Answer from './Answer';
 
 export const QuestionContext = React.createContext<any>(null);
 
-export default function App() {
+const App: React.FC<any> = () => {
   const [currentPage, setCurrentPage] = React.useState(0);
   const [questions, setAnswer] = React.useState(data.questions);
   const [isSubmitted, submit] = React.useState(false);
@@ -21,7 +21,6 @@ export default function App() {
               <div
                 style={style.backImage}
                 onClick={() => {
-                  console.log(questions);
                   setCurrentPage(currentPage - 1);
                 }}
               >
@@ -74,4 +73,6 @@ export default function App() {
       )}
     </div>
   );
-}
+};
+
+export default App;

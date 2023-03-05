@@ -2,13 +2,20 @@ import * as React from 'react';
 import './style.css';
 import { style } from './style';
 import { QuestionContext } from './App';
+import { IQuestion, IQuestionOption } from './questions';
 
-export default function Form({
+type Props = {
+  questions?: Array<IQuestion>;
+  currentPage?: number;
+  optionObj?: IQuestionOption;
+  readOnly?: boolean;
+};
+const Form: React.FC<Props> = ({
   questions,
   currentPage = 0,
   optionObj,
   readOnly = false,
-}) {
+}) => {
   const handleChange = (value, setAnswer) => {
     if (questions[currentPage].questiontype === 'Checkbox') {
       if ((questions[currentPage] as any)?.answer === undefined) {
@@ -72,4 +79,6 @@ export default function Form({
       }}
     </QuestionContext.Consumer>
   );
-}
+};
+
+export default Form;

@@ -2,8 +2,12 @@ import * as React from 'react';
 import './style.css';
 import { style } from './style';
 import Form from './Form';
+import { IQuestion } from './questions';
 
-export default function Answer({ questions }) {
+type Props = {
+  questions?: Array<IQuestion>;
+};
+const Answer: React.FC<Props> = ({ questions }) => {
   return (
     <div>
       <div style={style.container}>
@@ -30,4 +34,6 @@ export default function Answer({ questions }) {
       </div>
     </div>
   );
-}
+};
+
+export default Answer;

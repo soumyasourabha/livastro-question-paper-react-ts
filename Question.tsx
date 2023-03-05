@@ -2,8 +2,13 @@ import * as React from 'react';
 import './style.css';
 import { style } from './style';
 import Form from './Form';
+import { IQuestion } from './questions';
 
-export default function Question({ currentPage, questions }) {
+type Props = {
+  questions?: Array<IQuestion>;
+  currentPage?: number;
+};
+const Question: React.FC<Props> = ({ currentPage, questions }) => {
   return (
     <div>
       <div style={style.topBodyContainer}>
@@ -25,4 +30,6 @@ export default function Question({ currentPage, questions }) {
       })}
     </div>
   );
-}
+};
+
+export default Question;
