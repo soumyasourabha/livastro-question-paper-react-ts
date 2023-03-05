@@ -82,4 +82,8 @@ export const style = {
     width: '25px',
     height: '25px',
   },
+  answerBody: {
+    marginLeft: '10%',
+    marginBottom: '4%',
+  },
 };

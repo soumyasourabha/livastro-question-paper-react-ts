@@ -11,11 +11,13 @@ const Answer: React.FC<Props> = ({ questions }) => {
   return (
     <div>
       <div style={style.container}>
+        <div style={{ ...style.topBodyContainer, padding: '10px' }}>Answer</div>
         <div style={style.header}>
           {questions?.map((q, index) => {
             return (
-              <div key={q.questionid}>
-                {q.question}
+              <div key={q.questionid} style={style.answerBody}>
+                {index + 1}. {q.question}
+                <div style={{ marginTop: '6px' }}></div>
                 {q.questionoption.map((opt, optionIndex) => {
                   return (
                     <Form
