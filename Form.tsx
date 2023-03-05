@@ -8,37 +8,36 @@ type Props = {
   questions?: Array<IQuestion>;
   currentPage?: number;
   optionObj?: IQuestionOption;
+  optionIndex?: number;
   readOnly?: boolean;
 };
 const Form: React.FC<Props> = ({
   questions,
   currentPage = 0,
   optionObj,
+  optionIndex = 0,
   readOnly = false,
 }) => {
-  const handleChange = (value, setAnswer) => {
-    if (questions[currentPage].questiontype === 'Checkbox') {
-      if ((questions[currentPage] as any)?.answer === undefined) {
-        (questions[currentPage] as any).answer = [value];
-      } else if (
-        (questions[currentPage] as any)?.answer &&
-        (questions[currentPage] as any)?.answer?.length > 0 &&
-        ((questions[currentPage] as any)?.answer as [])?.find(
-          (item) => item === value
-        )
-      ) {
-        const ans = new Set((questions[currentPage] as any)?.answer);
-        ans.delete(value);
-        (questions[currentPage] as any).answer = [...ans];
-      } else {
-        (questions[currentPage] as any).answer.push(value);
-      }
+  const handleChange = (value: string, setAnswer: Function) => {
+    const qus = questions;
+    if (questions[currentPage].questiontype === 'Radio') {
+      qus[currentPage].questionoption.map((item) => (item.selected = false));
+      qus[currentPage].questionoption[optionIndex].selected = true;
+    } else if (questions[currentPage].questiontype === 'Checkbox') {
+      qus[currentPage].questionoption[optionIndex].selected =
+        !qus[currentPage].questionoption[optionIndex].selected;
     } else {
-      (questions[currentPage] as any).answer = value;
+      qus[currentPage].questionoption[0].optionvalue = value;
     }
-    setAnswer([...questions]);
+    setAnswer([...qus]);
   };
 
+  const checkRadioOrCheckBoxType = (currentPage: number): boolean => {
+    return questions[currentPage].questiontype === 'Radio' ||
+      questions[currentPage].questiontype === 'Checkbox'
+      ? true
+      : false;
+  };
   return (
     <QuestionContext.Consumer>
       {(setAnswer) => {
@@ -51,29 +50,23 @@ const Form: React.FC<Props> = ({
               id={optionObj?.optionid.toString()}
               name="option-name"
               value={
-                questions[currentPage].questiontype === 'Checkbox'
-                  ? questions[currentPage]?.answer?.map((item) => item)
-                  : questions[currentPage]?.answer
+                checkRadioOrCheckBoxType(currentPage)
+                  ? questions[currentPage].questionoption[optionIndex]
+                      .optionvalue
+                  : questions[currentPage].questionoption[0].optionvalue
               }
               checked={
-                questions[currentPage].questiontype === 'Checkbox'
-                  ? questions[currentPage]?.answer?.filter(
-                      (item) => item === optionObj.optionvalue
-                    ).length > 0
-                  : questions[currentPage].questiontype === 'Radio'
-                  ? questions[currentPage]?.answer === optionObj.optionvalue
+                checkRadioOrCheckBoxType(currentPage)
+                  ? questions[currentPage].questionoption[optionIndex].selected
                   : null
               }
               onChange={(e) => {
-                !readOnly
-                  ? handleChange(
-                      optionObj.optionvalue || (e.target as any).value,
-                      setAnswer
-                    )
-                  : null;
+                !readOnly ? handleChange(e.target.value, setAnswer) : null;
               }}
             />
-            <span style={style.bodyOption}>{optionObj.optionvalue}</span>
+            {checkRadioOrCheckBoxType(currentPage) ? (
+              <span style={style.bodyOption}>{optionObj.optionvalue}</span>
+            ) : null}
           </div>
         );
       }}

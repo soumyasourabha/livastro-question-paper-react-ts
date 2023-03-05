@@ -16,12 +16,13 @@ const Answer: React.FC<Props> = ({ questions }) => {
             return (
               <div key={q.questionid}>
                 {q.question}
-                {q.questionoption.map((opt) => {
+                {q.questionoption.map((opt, optionIndex) => {
                   return (
                     <Form
                       key={opt.optionid}
                       questions={questions}
                       currentPage={index}
+                      optionIndex={optionIndex}
                       optionObj={opt}
                       readOnly={true}
                     />
